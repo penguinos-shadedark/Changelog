@@ -1,0 +1,110 @@
+PenguinOS Celerity (Android 17) - Personal Build
+Xiaomi POCO F5 (marble)
+Maintainer: ShadeDark
+
+==================================================
+⚠️ BUILD NOTICE & CHANNEL RULES
+==================================================
+
+● Personal Build: This is a personal build shared as-is. Flash at your own discretion — use it or leave it.
+● No Support: This build is completely unsupported. Bug fixing is not a priority, and feature requests or ETAs will be ignored.
+● Community Discussion Only: If you have questions or run into anything, discuss it and ask fellow members in the group.
+● Strictly No DMs or Tags: Do not tag or DM me for support or unwanted reasons. Violating this will result in an instant ban.
+
+
+==================================================
+🚀 19 October 2026
+==================================================
+
+🔄 CLO & Security
+
+● Merged CLO revision `LA.QSSI.17.0.r1-11800-qssi.0` across system and framework repositories.
+● Bumped Android Security Patch string to `2026-10-05`.
+● Updated APNs to `LA.QSSI.17.0.r1-06700-qssi.0` and `LA.QISI.17.0.r1-02700-qssi.0`.
+
+🎮 Pentas (New Game & Video Sidebar)
+
+● Replaced GameSpace with Pentas — a new game and video sidebar with live telemetry and per-game tuning:
+  ◦ Sidebar & Telemetry: Live FPS, CPU, GPU (`kgsl gpubusy`), and RAM tiles, thermal profile switcher, media/brightness controls, and LMOFreeform app shortcuts.
+  ◦ Per-Game Tuning: Render scale via GameManager, thermal profiles mapped to `sm8450` configs, touch report rate (with HIDL TouchFeature support), and on-screen widgets.
+  ◦ In-Game Call Overlay: Answer/decline buttons, auto-speakerphone, and active in-call persistence.
+  ◦ Gaming Tools: Danmaku notification banners, three-finger screenshot lock, platform gesture lock (enabled by default), and game-launch memory/cache cleanup.
+  ◦ Refinements: Added sidebar handle idle opacity settings, added an App Info shortcut in the per-game header, and fixed monitor/Danmaku crashes.
+
+✨ Liquid Glass & UI Optimizations
+
+● RenderEngine & SystemUI:
+  ◦ Read Liquid Glass tuning once per frame and polled only when active.
+  ◦ Cached tuning colours, reused gradients across draws, kept rims within tiny slabs, and drew rounded glows from the nine-slice mask.
+● Launcher3 & Core:
+  ◦ Reused Liquid Glass rim gradients and folder blur effects between draws.
+  ◦ Reused floating tab bar key effects and fixed pre-draw listener leaks on glass tab bars.
+● Quick Settings & Lock Screen:
+  ◦ Applied a single blur region to the lock screen media player under Liquid Glass.
+  ◦ Reused brightness range and stepped media volume while dragging, and prevented slider zeroing on stationary taps.
+  ◦ Shared settings observers across panel elements, translated MyUI card labels, and stopped PowerMenu slider shimmer restarts outside the window.
+
+⚙️ SystemUI, Display & Framework
+
+● Restored Android 14 QPR1 `FingerprintInteractiveToAuth` handling and provider implementation for reliable touch-to-unlock behavior.
+● Implemented status bar and navigation bar OLED burn-in protection with fixed shift direction logic.
+● Redesigned per-app volume controls as inline pills inside the volume dialog with a new layered icon (and dropped the old Compose volume page in Settings).
+● Enabled Lock Screen Widgets (Communal Service) and Glanceable Hub overlays for `marble`.
+● Improved AOD & Doze handling:
+  ◦ Deferred SurfaceFlinger refresh rate and `setDesiredMode` changes while dozing or screen-off.
+  ◦ Enabled offscreen gestures to wake from AOD and briefly pulsed the display on when resuming AOD.
+● Updated KeyHandler to use Pocket Judge for proximity state updates and specify wake-up reasons.
+● Increased minimum visible recent tasks to 30, fixed IME switcher visibility when disabled, and disabled ART debug tracing on production builds.
+
+🛠 Settings & SetupWizard
+
+● Added `marble` hardware specifications to About Phone and restored hardware info controllers.
+● Extended the Battery Info page with a custom configurable provider (`BatterySettingsFeatureProviderImpl`).
+● Added a High Touch Polling Rate toggle (automatically disabled when Battery Saver is active).
+● Exposed Radio Info (`*#*#4636#*#*`) for voice-capable devices.
+● Added Bluetooth audio codec selection on the device details page and allowed changing aptX settings.
+● SetupWizard:
+  ◦ Stopped overriding Google SetupWizard.
+  ◦ Dropped inline GMS restore with fallback to Seedvault when present.
+  ◦ Allowlisted phone state and background start permissions.
+
+📷 Camera, Torch & Device (sm8450-common)
+
+● Implemented Torch Light strength control (`setTorchModeExt` / `supportsSetTorchModeExt`) with default level set to max, and capped camera `max_brightness`.
+● Migrated `libcameraservice` extension library to Soong config and added an enabled boolean for finished camera workarounds.
+● Removed DC Dimming.
+● Updated Wi-Fi firmware roaming overlay from `diting` OS3.0.6.0.VLFMIXM.
+● Switched to CarrierConfig for DTMF and CSP booleans, dropping deprecated overlays.
+
+🎧 Audio, Bluetooth & Dialer
+
+● Re-enabled the LHDCv5 Bluetooth codec and added support for remembering the chosen A2DP codec per device.
+● Disabled the broken AOSP aptX Voice codec to fix call audio routing to the internal speaker on car stereos.
+● Fixed broken Dolby decoders by reverting single-instance `MultiAccessUnit` reflector helper allocation.
+● Dialer:
+  ◦ Enabled call recording and auto-call recording for all regions.
+  ◦ Made recording names sortable and restored the Sounds & Vibration settings entry.
+
+🔤 Fonts & Customization
+
+● Shipped Google Sans fonts on Vanilla builds (already included by default on GMS builds).
+● Added Space Grotesk, Volte Round, NotoSans, and extra font overlays.
+● Updated Urbanist (v1.330) and Manrope (v4.504) fonts.
+
+📦 Vanilla & GMS Packaging
+
+● GMS Build:
+  ◦ Uses AOSPA GMS (`vendor/google/gms`).
+  ◦ Excluded core Google apps from App Clone to prevent duplicates.
+● Vanilla Build:
+  ◦ Integrated microG support (`vendor/partner_gms`), extra Pixel clocks, and NTFS-3G support.
+  ◦ Default System Apps:
+    - Dialer: PenguinOS Dialer
+    - Messaging & Keyboard: crDroid Messaging & LatinIME
+    - Gallery: crDroid Glimpse & LineageOS Canvas
+    - Music & Media: LineageOS Twelve (Music) & Recorder
+    - Utilities: LineageOS Etar (Calendar), ExactCalculator, DeskClock, and Jelly (Browser)
+
+🙏 Credits
+
+● Credits and thanks to all contributing developers — check the commit history on the GitHub source repositories for individual authorship.
